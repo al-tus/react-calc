@@ -1,0 +1,10 @@
+.wrapper {
+    width: 393px;
+    height: 852px;
+    padding: 59pt 15px 15px 15px;
+    background-color: #fff;
+    border: 8px solid #323232;
+    border-radius: 60px;
+    position: relative;
+    overflow: hidden;
+}

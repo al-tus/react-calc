@@ -1,0 +1,19 @@
+button {
+    width: 69px;
+    height: 69px;
+    cursor: pointer;
+    font-size: 26px;
+    font-weight: 500;
+}
+
+.zero {
+    grid-column: 2 / 3;
+}
+
+.operator{
+    color: orange;
+}
+
+.utility {
+    color: darkblue;
+}

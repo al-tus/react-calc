@@ -1,0 +1,13 @@
+.header-button {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    cursor: pointer;
+}
+
+.header-button img {
+    width: 80%;
+}

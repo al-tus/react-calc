@@ -30,11 +30,11 @@ Follow these steps to get a local copy up and running for development and testin
 
 1.  **Clone the repository:**
     ```bash
-    git clone [Your Repository URL Here]
+    git clone https://github.com/al-tus/react-calc
     ```
 2.  **Navigate to the project directory:**
     ```bash
-    cd react-calculator-project
+    cd react-calc
     ```
 3.  **Install dependencies:**
     ```bash

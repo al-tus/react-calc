@@ -1,3 +1,7 @@
 .input-screen{
     height: 30px;
 }
+
+span.operator{
+    margin: 0 5px;
+}

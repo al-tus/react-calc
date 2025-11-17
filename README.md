@@ -16,7 +16,7 @@ This project was specifically designed to practice and demonstrate understanding
 
 * **React** (JavaScript library)
 * **HTML/CSS** (For structure and styling)
-* **TypeScript**
+* **JavaScript**
 
 ## 💡 How to Run Locally
 

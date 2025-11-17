@@ -17,11 +17,11 @@ import TopBar from "./components/TopBar";
 const headerButtonsInfo =['history', 'undo']
 
 const btnValues = [
-    ['AC', '+/-', '%', '÷'],
+    ['AC', '( )', '%', '÷'],
     ['7', '8', '9', '×'],
     ['4', '5', '6', '-'],
     ['1', '2', '3', '+'],
-    ['0', '.', '=']
+    ['.', '0', 'clear', '=']
 ]
 
 function App() {
@@ -84,7 +84,7 @@ function App() {
         e.preventDefault();
 
         const value = e.target.innerHTML;
-
+        const lastChar = calc.outString.slice(-1)
 
         const operatorRegex = /[+\-×÷]$/;
 
@@ -103,8 +103,8 @@ function App() {
 
         setCalc({
             ...calc,
-            outString:  updatedOutString,
-            evalString: updatedEvalString,
+            outString:  lastChar === '(' ? calc.outString : updatedOutString ,
+            evalString: lastChar === '(' ? calc.evalString : updatedEvalString,
             res: calc.res
         })
 
@@ -113,13 +113,30 @@ function App() {
     const resetClickHandler = () => {
         setCalc({
             ...calc,
-            outString: '',
+            outString: '0',
             evalString: '',
             res: 0,
         })
     }
 
-    const invertClickHandler = () => {
+    const clearClickHandler = () => {
+
+        const operatorRegex = /[+\-×÷]$/;
+
+        let newEval = calc.evalString.slice(0, -1);
+        let newOut = calc.outString.slice(0, -1)
+
+        let evalForRes = newEval;
+        if (operatorRegex.test(newEval)) {
+            evalForRes = newEval.slice(0, -1);
+        }
+
+        setCalc({
+            ...calc,
+            outString: newOut,
+            evalString: newEval,
+            res:  formatNumber(safeEval(evalForRes.replace(/×/g, '*').replace(/÷/g, '/')))
+        })
 
     }
 
@@ -201,12 +218,57 @@ function App() {
         }
     }
 
+    const parenthesisClickHandler = () => {
+        const openCount = (calc.evalString.match(/\(/g) || []).length;
+        const closeCount = (calc.evalString.match(/\)/g) || []).length
+
+        const lastChar = calc.outString.slice(-1)
+        const lastCharIsNumber = /[0-9]$/.test(lastChar);
+        const lastCharIsOperator = /[+\-×÷]$/.test(lastChar);
+
+        const canAddClosing = openCount > closeCount
+        const lastCharIsValidForClosing = lastCharIsNumber || lastChar === '%' || lastChar === ')'
+
+        if (canAddClosing && lastCharIsValidForClosing) {
+            const newEvalString = calc.evalString + ')'
+
+            setCalc({
+                ...calc,
+                outString: calc.outString + ')',
+                evalString: newEvalString,
+                res: formatNumber(safeEval(
+                    newEvalString.replace(/×/g, '*').replace(/÷/g, '/')
+                ))
+            });
+            return;
+        }
+
+        if (lastCharIsNumber || lastChar === '%' || lastChar === ')') {
+            setCalc({
+                ...calc,
+                outString: calc.outString + '×(',
+                evalString: calc.evalString + '*('
+,               res: calc.res
+            })
+            return;
+        }
+
+        if (calc.outString === '0' || lastCharIsOperator || lastChar === '(') {
+            setCalc({
+                ...calc,
+                outString: calc.outString === '0' ? '(' : calc.outString + '(',
+                evalString: calc.evalString === '0' ? '(' : calc.outString + '(',
+                res: calc.res
+            })
+        }
+
+    }
+
     const commaClickHandler = () => {
 
     }
 
     const equalsClickHandler = () => {
-
     }
 
 
@@ -240,7 +302,7 @@ function App() {
                         className={
                             value === '+' || value === '-' || value === '×' || value === '÷' || value === '='
                                 ? 'operator'
-                                : value === 'AC' || value === '+/-' || value === '%'
+                                : value === 'AC' || value === 'clear' || value === '%' || value === '( )'
                                     ? 'utility'
                                     : value === '0'
                                         ? 'zero'
@@ -249,17 +311,19 @@ function App() {
                         onClick={
                             value === 'AC'
                                 ? resetClickHandler
-                                : value === '+/-'
-                                    ? invertClickHandler
-                                    : value === '%'
-                                        ? percentClickHandler
-                                        : value === '='
-                                            ? equalsClickHandler
-                                            : value === '+' || value === '-' || value === '×' || value === '÷'
-                                                ? operatorClickHandler
-                                                : value === '.'
-                                                    ? commaClickHandler
-                                                    : numberClickHandler
+                                : value === 'clear'
+                                    ? clearClickHandler
+                                    : value === '( )'
+                                        ? parenthesisClickHandler
+                                        : value === '%'
+                                            ? percentClickHandler
+                                            : value === '='
+                                                ? equalsClickHandler
+                                                : value === '+' || value === '-' || value === '×' || value === '÷'
+                                                    ? operatorClickHandler
+                                                    : value === '.'
+                                                        ? commaClickHandler
+                                                        : numberClickHandler
                         }
                     />
                 )

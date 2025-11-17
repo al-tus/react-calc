@@ -6,9 +6,6 @@ button {
     font-weight: 500;
 }
 
-.zero {
-    grid-column: 2 / 3;
-}
 
 .operator{
     color: orange;
@@ -16,4 +13,8 @@ button {
 
 .utility {
     color: darkblue;
+}
+
+.utility span {
+    font-size: 26px;
 }

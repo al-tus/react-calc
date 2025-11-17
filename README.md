@@ -1,10 +1,10 @@
 # React Calculator Project
 
-## 🌟 Overview
+## Overview
 
 This is a **simple calculator application** developed as a practice project to solidify foundational knowledge in **React**. The primary goal was to implement the core mechanics of a calculator using basic React hooks and concepts.
 
-## 🚀 Key Learning Focus
+## Key Learning Focus
 
 This project was specifically designed to practice and demonstrate understanding of the following essential React concepts:
 
@@ -12,13 +12,16 @@ This project was specifically designed to practice and demonstrate understanding
 * **Component Communication (using `props`):** Passing functions and data between parent (Calculator) and child (Button) components.
 * **Module Structure:** Using **`import`** and **`export`** for organizing components.
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 * **React** (JavaScript library)
 * **HTML/CSS** (For structure and styling)
 * **JavaScript**
 
-## 💡 How to Run Locally
+* ## Run in Browes
+* [GitHub Pages](https://al-tus.github.io/react-calc/)
+
+##  How to Run Locally
 
 Follow these steps to get a local copy up and running for development and testing.
 
@@ -53,7 +56,7 @@ Follow these steps to get a local copy up and running for development and testin
     ```
     The application will usually open automatically in your browser at `http://localhost:3000`.
 
-## 🤝 Contributing
+##  Contributing
 
 This is a personal practice project, but suggestions for improvements or bug fixes are always welcome! Feel free to open an issue or submit a pull request.
 

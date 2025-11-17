@@ -18,7 +18,7 @@ This project was specifically designed to practice and demonstrate understanding
 * **HTML/CSS** (For structure and styling)
 * **JavaScript**
 
-* ## Run in Browes
+## Run in Browes
 * [GitHub Pages](https://al-tus.github.io/react-calc/)
 
 ##  How to Run Locally

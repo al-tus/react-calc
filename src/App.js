@@ -53,6 +53,41 @@ function App() {
         return parts.join('.');
     }
 
+    const calculatePreview = (expression) => {
+        if (!expression) return 0;
+
+        let evalStr = expression.replace(/×/g, '*').replace(/÷/g, '/')
+
+        const openCount = (evalStr.match(/\(/g) || []).length
+        const closeCount = (evalStr.match(/\)/g) || []).length
+
+        if (openCount > closeCount) {
+            let diff = openCount - closeCount;
+
+            while (diff > 0) {
+                const lastOpenIndex = evalStr.lastIndexOf('(');
+                if (lastOpenIndex !== -1) {
+                    evalStr = evalStr.slice(0, lastOpenIndex) + evalStr.slice(lastOpenIndex + 1)
+                    diff--
+                } else{
+                    break;
+                }
+            }
+
+            while (/[+\-*/]$/.test(evalStr)) {
+                evalStr = evalStr.slice(0, -1)
+            }
+
+            if (evalStr === '') return calc.res;
+
+            const result = safeEval(evalStr);
+            return result === '' || isNaN(result) ? calc.res : formatNumber(result);
+        }
+
+        const result = safeEval(evalStr)
+        return result === '' || isNaN(result) ? calc.res : formatNumber(result);
+    }
+
     const numberClickHandler = (e) => {
         e.preventDefault();
         const value = e.target.innerHTML;
@@ -70,13 +105,13 @@ function App() {
             newEval = calc.evalString + value;
         }
 
+        console.log(calc.evalString);
+
         setCalc({
             ...calc,
             outString:newOut,
             evalString: newEval,
-            res: formatNumber(safeEval(
-                newEval.replace(/×/g, '*').replace(/÷/g, '/'))
-            )
+            res: calculatePreview(newEval)
         })
     }
 
@@ -84,7 +119,6 @@ function App() {
         e.preventDefault();
 
         const value = e.target.innerHTML;
-        const lastChar = calc.outString.slice(-1)
 
         const operatorRegex = /[+\-×÷]$/;
 
@@ -103,9 +137,9 @@ function App() {
 
         setCalc({
             ...calc,
-            outString:  lastChar === '(' ? calc.outString : updatedOutString ,
-            evalString: lastChar === '(' ? calc.evalString : updatedEvalString,
-            res: calc.res
+            outString: updatedOutString ,
+            evalString: updatedEvalString,
+            res: calculatePreview(updatedEvalString)
         })
 
     }
@@ -120,23 +154,27 @@ function App() {
     }
 
     const clearClickHandler = () => {
+        if (calc.outString === '0') return;
 
-        const operatorRegex = /[+\-×÷]$/;
-
+        let newOut = calc.outString.slice(0, -1);
         let newEval = calc.evalString.slice(0, -1);
-        let newOut = calc.outString.slice(0, -1)
 
-        let evalForRes = newEval;
-        if (operatorRegex.test(newEval)) {
-            evalForRes = newEval.slice(0, -1);
+        if (newOut === '') {
+            setCalc({
+                ...calc,
+                outString: '0',
+                evalString: '',
+                res: 0
+            });
+            return;
         }
 
         setCalc({
             ...calc,
             outString: newOut,
             evalString: newEval,
-            res:  formatNumber(safeEval(evalForRes.replace(/×/g, '*').replace(/÷/g, '/')))
-        })
+            res: calculatePreview(newEval)
+        });
 
     }
 
@@ -219,48 +257,40 @@ function App() {
     }
 
     const parenthesisClickHandler = () => {
-        const openCount = (calc.evalString.match(/\(/g) || []).length;
-        const closeCount = (calc.evalString.match(/\)/g) || []).length
-
         const lastChar = calc.outString.slice(-1)
-        const lastCharIsNumber = /[0-9]$/.test(lastChar);
-        const lastCharIsOperator = /[+\-×÷]$/.test(lastChar);
+        const openCount = (calc.outString.match(/\(/g) || []).length;
+        const closeCount = (calc.outString.match(/\)/g) || []).length
 
-        const canAddClosing = openCount > closeCount
-        const lastCharIsValidForClosing = lastCharIsNumber || lastChar === '%' || lastChar === ')'
+        let newOut = calc.outString
+        let newEval = calc.evalString
 
-        if (canAddClosing && lastCharIsValidForClosing) {
-            const newEvalString = calc.evalString + ')'
+        const canClose = openCount > closeCount
+        const isValidClosingSpot = /[0-9)%]/.test(lastChar)
 
-            setCalc({
-                ...calc,
-                outString: calc.outString + ')',
-                evalString: newEvalString,
-                res: formatNumber(safeEval(
-                    newEvalString.replace(/×/g, '*').replace(/÷/g, '/')
-                ))
-            });
-            return;
+        if (canClose && isValidClosingSpot) {
+            newOut += ')'
+            newEval += ')'
+        } else {
+            if (/[0-9)%]/.test(lastChar)) {
+                newOut += '×('
+                newEval += '*('
+            } else {
+                if (newOut === '0') {
+                    newOut = '('
+                    newEval = '('
+                } else {
+                    newOut += '(';
+                    newEval += '(';
+                }
+            }
         }
 
-        if (lastCharIsNumber || lastChar === '%' || lastChar === ')') {
-            setCalc({
-                ...calc,
-                outString: calc.outString + '×(',
-                evalString: calc.evalString + '*('
-,               res: calc.res
-            })
-            return;
-        }
-
-        if (calc.outString === '0' || lastCharIsOperator || lastChar === '(') {
-            setCalc({
-                ...calc,
-                outString: calc.outString === '0' ? '(' : calc.outString + '(',
-                evalString: calc.evalString === '0' ? '(' : calc.outString + '(',
-                res: calc.res
-            })
-        }
+        setCalc({
+            ...calc,
+            outString: newOut,
+            evalString: newEval,
+            res: calculatePreview(newEval)
+        })
 
     }
 

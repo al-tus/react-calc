@@ -5,16 +5,19 @@ button {
     font-size: 24px;
     font-weight: bold;
     border-radius: 10px;
+    color: #4A0E18;
 }
 
 
 button.operator{
-    background-color: #F2AF62;
+    background-color: #E07A88;
+    color: white;
 }
 
 
 .utility {
-   background-color: #FFE5AC;
+    background-color: #FADADD;
+    color: #800020;
 }
 
 .utility span {
@@ -22,10 +25,11 @@ button.operator{
 }
 
 .number{
-    background-color: #F4CE9E;
+    background-color: #F3C5C5;
 }
 
 .equal{
     background: #FFDB67;
-    background: linear-gradient(0deg, rgba(255, 219, 103, 1) 0%, rgba(232, 149, 26, 1) 100%);
+    color: white;
+    background: linear-gradient(0deg, rgba(153, 0, 51, 1) 0%, rgba(227, 66, 85, 1) 100%);
 }

@@ -1,0 +1,17 @@
+.header-box {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.header-box button {
+    background-color: transparent;
+    color: #F1B062;
+    width: min-content;
+    height: min-content;
+}
+
+.header-box .material-symbols-outlined {
+   font-size: 30px;
+}

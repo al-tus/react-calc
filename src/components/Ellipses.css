@@ -1,0 +1,23 @@
+.ellipse {
+    position: absolute;
+    width: 60vw;
+    height: 60vw;
+    max-width: 1000px;
+    max-height: 1000px;
+}
+
+.ellipse ellipse {
+    fill: #F2AF62;
+}
+
+.ellipse-1 {
+    top: 0;
+    left: 0;
+    transform: translate(-40%, -60%);
+}
+
+.ellipse-2 {
+    right: 0;
+    bottom: 0;
+    transform: translate(50%, 50%);
+}

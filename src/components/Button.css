@@ -2,19 +2,30 @@ button {
     width: 69px;
     height: 69px;
     cursor: pointer;
-    font-size: 26px;
-    font-weight: 500;
+    font-size: 24px;
+    font-weight: bold;
+    border-radius: 10px;
 }
 
 
-.operator{
-    color: #ea7576;
+button.operator{
+    background-color: #F2AF62;
 }
+
 
 .utility {
-    color: #58868d;
+   background-color: #FFE5AC;
 }
 
 .utility span {
     font-size: 26px;
+}
+
+.number{
+    background-color: #F4CE9E;
+}
+
+.equal{
+    background: #FFDB67;
+    background: linear-gradient(0deg, rgba(255, 219, 103, 1) 0%, rgba(232, 149, 26, 1) 100%);
 }

@@ -8,6 +8,7 @@
 }
 
 body {
+    overflow: hidden;
     display: flex;
     align-items: center;
     height: 100vh;
@@ -17,5 +18,5 @@ body {
 button {
     background-color: #fff;
     border: none;
-    outline: none!important;
+    /*outline: none!important;*/
 }

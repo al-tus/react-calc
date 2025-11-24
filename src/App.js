@@ -3,37 +3,31 @@ import { useState } from "react";
 import './index.css'
 
 import Wrapper from './components/Wrapper';
-import Header from './components/Header';
-import HeaderButton from "./components/HeaderButton";
 import Displays from "./components/Displays";
 import InputDisplay from "./components/InputDisplay";
 import OutputDisplay from "./components/OutputDisplay";
 import ButtonsBox from "./components/ButtonsBox";
 import Button from "./components/Button";
-import TopBar from "./components/TopBar";
-
-
-
-const headerButtonsInfo =['history', 'undo']
+import Ellipses from "./components/Ellipses";
+import HeaderBox from "./components/HeaderBox";
 
 const btnValues = [
     ['AC', '( )', '%', '÷'],
     ['7', '8', '9', '×'],
     ['4', '5', '6', '-'],
     ['1', '2', '3', '+'],
-    ['.', '0', 'clear', '=']
+    ['+/-', '0', '.', '=']
+]
+
+const headerBtn = [
+    ['history'], ['clear']
 ]
 
 function App() {
     const [calc, setCalc] = useState({
-        value: 0,
-        operator: '',
-        outString: '0',
+        outString: '',
         evalString: '',
         res: 0,
-        curValue: 0,
-        undo: [],
-        history: []
     });
 
     const safeEval = (expr) => {
@@ -92,6 +86,12 @@ function App() {
         e.preventDefault();
         const value = e.target.innerHTML;
 
+        if (calc.outString !== '' && calc.res === 0) {
+            calc.outString = '';
+            calc.evalString = '';
+        }
+
+
         let newOut
         let newEval
 
@@ -105,7 +105,6 @@ function App() {
             newEval = calc.evalString + value;
         }
 
-        console.log(calc.evalString);
 
         setCalc({
             ...calc,
@@ -117,9 +116,7 @@ function App() {
 
     const operatorClickHandler = (e) => {
         e.preventDefault();
-
         const value = e.target.innerHTML;
-
         const operatorRegex = /[+\-×÷]$/;
 
         let updatedOutString
@@ -131,8 +128,13 @@ function App() {
             updatedEvalString = calc.evalString.replace(operatorRegex, value);
         }
          else {
-            updatedOutString = calc.outString + value;
-            updatedEvalString = calc.evalString + value;
+             if (calc.outString === '') {
+                 updatedOutString = '0' + value
+                 updatedEvalString = '0' + value;
+             } else{
+                 updatedOutString = calc.outString + value;
+                 updatedEvalString = calc.evalString + value;
+             }
         }
 
         setCalc({
@@ -147,7 +149,7 @@ function App() {
     const resetClickHandler = () => {
         setCalc({
             ...calc,
-            outString: '0',
+            outString: '',
             evalString: '',
             res: 0,
         })
@@ -162,7 +164,7 @@ function App() {
         if (newOut === '') {
             setCalc({
                 ...calc,
-                outString: '0',
+                outString: '',
                 evalString: '',
                 res: 0
             });
@@ -295,54 +297,113 @@ function App() {
     }
 
     const commaClickHandler = () => {
+        const parts = calc.evalString.split(/[+\-×÷(]/);
+        const currentNumber = parts[parts.length - 1];
 
+        if(currentNumber && currentNumber.includes('.')) return;
+
+        let prefix = ''
+
+        const lastChar = calc.outString.slice(-1)
+        if (calc.outString === '' || /[+\-×÷(]/.test(lastChar) || calc.outString === '0'){
+            prefix = '0'
+
+            if (calc.outString === '0') {
+                setCalc({
+                    ...calc,
+                    outString: '0.',
+                    evalString: '0.'
+                })
+                return;
+            }
+        }
+
+        setCalc({
+            ...calc,
+            outString: calc.outString + prefix + '.',
+            evalString: calc.evalString + prefix + '.',
+        })
     }
 
     const equalsClickHandler = () => {
+        if (!calc.evalString) return;
+
+        let evalStr = calc.evalString.replace(/×/g, '*').replace(/÷/g, '/');
+
+        const openCount = (evalStr.match(/\(/g) || []).length;
+        const closeCount = (evalStr.match(/\)/g) || []).length;
+
+        if (openCount > closeCount) {
+            evalStr += ')'.repeat(openCount - closeCount);
+        }
+
+        const result = safeEval(evalStr)
+
+        console.log(calc.outString)
+
+        if (result !== '' && !isNaN(result)) {
+            setCalc({
+                ...calc,
+                res: 0,
+                outString: String(result),
+                evalString: String(result),
+            })
+        }
+    }
+
+    const historyClickHandler = () => {
+
     }
 
 
 
   return (
-    <Wrapper>
-        <TopBar/>
-        <Header>
-            {headerButtonsInfo.map((type, i) => {
-                return (
-                    <HeaderButton
-                        key={i}
-                        type={type}
-                        onClick={() => {
-                            console.log(type);
-                        }}
-                    />
-                )
-            })}
-        </Header>
-        <Displays>
-            <InputDisplay value={calc.outString ? calc.outString : '0'} />
-            <OutputDisplay result={calc.res ? calc.res : '0'}/>
-        </Displays>
-        <ButtonsBox>
-            {btnValues.flat().map((value, i) => {
-                return (
-                    <Button
-                        key={i}
-                        value={value}
-                        className={
-                            value === '+' || value === '-' || value === '×' || value === '÷' || value === '='
-                                ? 'operator'
-                                : value === 'AC' || value === 'clear' || value === '%' || value === '( )'
-                                    ? 'utility'
-                                    : value === '0'
-                                        ? 'zero'
-                                        : ''
-                        }
-                        onClick={
-                            value === 'AC'
-                                ? resetClickHandler
-                                : value === 'clear'
+      <>
+        <Ellipses />
+
+        <Wrapper>
+            <Displays>
+                <InputDisplay value={calc.outString ? calc.outString : '0'} />
+                <OutputDisplay result={
+                    calc.outString !== '' && calc.res === 0
+                    ? ''
+                        : calc.res
+                }/>
+            </Displays>
+            <ButtonsBox>
+                <HeaderBox>
+                    {headerBtn.flat().map((value, i) => {
+                        return (
+                            <Button
+                                key={i}
+                                value={value}
+                                onClick={
+                                    value === 'clear'
                                     ? clearClickHandler
+                                        : historyClickHandler
+                                }
+                            />
+                        )
+                    })}
+                </HeaderBox>
+
+                {btnValues.flat().map((value, i) => {
+                    return (
+                        <Button
+                            key={i}
+                            value={value}
+                            className={
+                                value === '+' || value === '-' || value === '×' || value === '÷'
+                                    ? 'operator'
+                                    : value === 'AC' || value === 'clear' || value === '%' || value === '( )'
+                                        ? 'utility'
+                                        : value === '='
+                                            ? 'equal'
+                                            : 'number'
+                            }
+                            onClick={
+                                value === 'AC'
+                                    ? resetClickHandler
                                     : value === '( )'
                                         ? parenthesisClickHandler
                                         : value === '%'
@@ -354,13 +415,14 @@ function App() {
                                                     : value === '.'
                                                         ? commaClickHandler
                                                         : numberClickHandler
-                        }
-                    />
-                )
-            })}
-        </ButtonsBox>
+                            }
+                        />
+                    )
+                })}
+            </ButtonsBox>
 
-    </Wrapper>
+        </Wrapper>
+      </>
   );
 }
 

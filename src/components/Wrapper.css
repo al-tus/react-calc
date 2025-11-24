@@ -1,10 +1,13 @@
 .wrapper {
-    width: 393px;
-    height: 852px;
-    padding: 59pt 15px 15px 15px;
-    background-color: #fff;
-    border: 8px solid #323232;
-    border-radius: 60px;
+    width: 336px;
+    padding-top: 50px;
+    background-color: rgb(255, 240, 211);
+    border-radius: 10px;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 20px 15px rgba(0, 0, 0, 0.2);
+}
+
+.wrapper > div {
+    padding: 15px;
 }

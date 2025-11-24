@@ -1,9 +1,9 @@
 .buttons-box {
-    width: 100%;
+    width: fit-content;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    gap: 25px;
+    gap: 10px;
     margin-top: 30px;
-
+    background-color: #ffffdd;
+    border-top: solid 3px #000;
 }

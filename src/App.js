@@ -10,6 +10,7 @@ import ButtonsBox from "./components/ButtonsBox";
 import Button from "./components/Button";
 import Ellipses from "./components/Ellipses";
 import HeaderBox from "./components/HeaderBox";
+import HistoryDisplay from "./components/HistoryDisplay";
 
 const btnValues = [
     ['AC', '( )', '%', '÷'],
@@ -28,7 +29,10 @@ function App() {
         outString: '',
         evalString: '',
         res: 0,
+        history: [],
     });
+
+    const [isShow, setIsShow] = useState(false);
 
     const safeEval = (expr) => {
         try {
@@ -84,11 +88,12 @@ function App() {
 
     const numberClickHandler = (e) => {
         e.preventDefault();
+
         const value = e.target.innerHTML;
 
-        if (calc.outString !== '' && calc.res === 0) {
-            calc.outString = '';
-            calc.evalString = '';
+        if (!(/[+\-×÷]$/.test(calc.outString)) && calc.res === 0) {
+            calc.outString = ''
+            calc.evalString = ''
         }
 
 
@@ -347,12 +352,13 @@ function App() {
                 res: 0,
                 outString: String(result),
                 evalString: String(result),
+                history: [...calc.history, {res: calc.res, outString: calc.outString, evalString: calc.evalString}]
             })
         }
     }
 
     const historyClickHandler = () => {
-
+        setIsShow(!isShow)
     }
 
 
@@ -362,6 +368,7 @@ function App() {
         <Ellipses />
 
         <Wrapper>
+            <HistoryDisplay className={isShow ? 'show-history' : ''} history={calc.history}/>
             <Displays>
                 <InputDisplay value={calc.outString ? calc.outString : '0'} />
                 <OutputDisplay result={
@@ -370,55 +377,59 @@ function App() {
                         : calc.res
                 }/>
             </Displays>
-            <ButtonsBox>
-                <HeaderBox>
-                    {headerBtn.flat().map((value, i) => {
-                        return (
-                            <Button
-                                key={i}
-                                value={value}
-                                onClick={
-                                    value === 'clear'
-                                    ? clearClickHandler
-                                        : historyClickHandler
-                                }
-                            />
-                        )
-                    })}
-                </HeaderBox>
-
-                {btnValues.flat().map((value, i) => {
-                    return (
-                        <Button
-                            key={i}
-                            value={value}
-                            className={
-                                value === '+' || value === '-' || value === '×' || value === '÷'
-                                    ? 'operator'
-                                    : value === 'AC' || value === 'clear' || value === '%' || value === '( )'
-                                        ? 'utility'
-                                        : value === '='
-                                            ? 'equal'
-                                            : 'number'
-                            }
-                            onClick={
-                                value === 'AC'
-                                    ? resetClickHandler
-                                    : value === '( )'
-                                        ? parenthesisClickHandler
-                                        : value === '%'
-                                            ? percentClickHandler
-                                            : value === '='
-                                                ? equalsClickHandler
-                                                : value === '+' || value === '-' || value === '×' || value === '÷'
-                                                    ? operatorClickHandler
-                                                    : value === '.'
-                                                        ? commaClickHandler
-                                                        : numberClickHandler
-                            }
-                        />
-                    )
-                })}
+            <ButtonsBox
+                headerContent={
+                    <HeaderBox>
+                        {headerBtn.flat().map((value, i) => {
+                            return (
+                                <Button
+                                    key={i}
+                                    value={value}
+                                    onClick={
+                                        value === 'clear'
+                                            ? clearClickHandler
+                                            : historyClickHandler
+                                    }
+                                />
+                            )
+                        })}
+                    </HeaderBox>
+                }
+                buttonsContent={
+                    btnValues.flat().map((value, i) => {
+                            return (
+                                <Button
+                                    key={i}
+                                    value={value}
+                                    className={
+                                        value === '+' || value === '-' || value === '×' || value === '÷'
+                                            ? 'operator'
+                                            : value === 'AC' || value === 'clear' || value === '%' || value === '( )'
+                                                ? 'utility'
+                                                : value === '='
+                                                    ? 'equal'
+                                                    : 'number'
+                                    }
+                                    onClick={
+                                        value === 'AC'
+                                            ? resetClickHandler
+                                            : value === '( )'
+                                                ? parenthesisClickHandler
+                                                : value === '%'
+                                                    ? percentClickHandler
+                                                    : value === '='
+                                                        ? equalsClickHandler
+                                                        : value === '+' || value === '-' || value === '×' || value === '÷'
+                                                            ? operatorClickHandler
+                                                            : value === '.'
+                                                                ? commaClickHandler
+                                                                : numberClickHandler
+                                    }
+                                />
+                            )
+                        })
+                }
+            >
             </ButtonsBox>
 
         </Wrapper>

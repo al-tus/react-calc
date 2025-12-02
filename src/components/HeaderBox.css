@@ -1,6 +1,7 @@
 .header-box {
-    grid-column: 1 / -1;
+    width: 100%;
     display: flex;
+    margin-bottom: 3px;
     justify-content: space-between;
     align-items: flex-end;
 }

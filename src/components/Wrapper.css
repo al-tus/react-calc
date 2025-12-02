@@ -1,5 +1,8 @@
 .wrapper {
+    display: flex;
+    flex-direction: column;
     width: 336px;
+    height: 90vh;
     padding-top: 50px;
     background-color: rgb(255, 240, 242);
     border-radius: 10px;

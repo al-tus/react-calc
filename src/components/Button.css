@@ -1,6 +1,5 @@
 button {
-    width: 69px;
-    height: 69px;
+    width: 100%;
     cursor: pointer;
     font-size: 24px;
     font-weight: bold;

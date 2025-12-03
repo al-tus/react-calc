@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import './index.css'
 
@@ -17,7 +17,7 @@ const btnValues = [
     ['7', '8', '9', '×'],
     ['4', '5', '6', '-'],
     ['1', '2', '3', '+'],
-    ['+/-', '0', '.', '=']
+    ['.',  '0', '=']
 ]
 
 const headerBtn = [
@@ -331,8 +331,11 @@ function App() {
     }
 
     const equalsClickHandler = () => {
-        if (!calc.evalString) return;
+        const parts = calc.evalString
+            .split(/([+\-*/%])/)
+            .filter(part => part.trim().length > 0);
 
+        if (parts.length < 3 || !calc.evalString || calc.res === 0) return
         let evalStr = calc.evalString.replace(/×/g, '*').replace(/÷/g, '/');
 
         const openCount = (evalStr.match(/\(/g) || []).length;
@@ -342,9 +345,12 @@ function App() {
             evalStr += ')'.repeat(openCount - closeCount);
         }
 
-        const result = safeEval(evalStr)
+        if (/[+\-*/]$/.test(evalStr)) {
+            calc.outString = calc.outString.slice(0, -1)
+            calc.outString = calc.evalString.slice(0, -1)
+        }
 
-        console.log(calc.outString)
+        const result = calculatePreview(evalStr)
 
         if (result !== '' && !isNaN(result)) {
             setCalc({
@@ -359,6 +365,7 @@ function App() {
 
     const historyClickHandler = () => {
         setIsShow(!isShow)
+
     }
 
 
@@ -368,7 +375,10 @@ function App() {
         <Ellipses />
 
         <Wrapper>
-            <HistoryDisplay className={isShow ? 'show-history' : ''} history={calc.history}/>
+            <HistoryDisplay
+                className={isShow ? 'show-history' : ''}
+                history={calc.history}
+            />
             <Displays>
                 <InputDisplay value={calc.outString ? calc.outString : '0'} />
                 <OutputDisplay result={

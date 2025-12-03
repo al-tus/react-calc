@@ -1,7 +1,7 @@
 button {
     width: 100%;
     cursor: pointer;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: bold;
     border-radius: 10px;
     color: #4A0E18;
@@ -30,5 +30,6 @@ button.operator{
 .equal{
     background: #FFDB67;
     color: white;
+    grid-column: 3/5;
     background: linear-gradient(0deg, rgba(153, 0, 51, 1) 0%, rgba(227, 66, 85, 1) 100%);
 }

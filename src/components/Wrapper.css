@@ -1,9 +1,9 @@
 .wrapper {
     display: flex;
     flex-direction: column;
-    width: 336px;
-    height: 90vh;
-    padding-top: 50px;
+    aspect-ratio: 1 / 2;
+    height: 80vh;
+    padding-top: 10px;
     background-color: rgb(255, 240, 242);
     border-radius: 10px;
     position: relative;

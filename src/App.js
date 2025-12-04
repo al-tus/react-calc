@@ -91,7 +91,7 @@ function App() {
 
         const value = e.target.innerHTML;
 
-        if (!(/[+\-×÷]$/.test(calc.outString)) && calc.res === 0 && calc.outString.slice(-1) !== '.') {
+        if (!(/[+\-×÷()]$/.test(calc.outString)) && calc.res === 0 && calc.outString.slice(-1) !== '.') {
             calc.outString = ''
             calc.evalString = ''
         }
@@ -111,7 +111,6 @@ function App() {
             newEval = calc.evalString + value;
         }
 
-
         setCalc({
             ...calc,
             outString:newOut,
@@ -124,9 +123,9 @@ function App() {
         e.preventDefault();
         const value = e.target.innerHTML;
 
-            if((value === '×' || value === '÷' || value === '+') && calc.outString.slice(-1) === '(') {
-                return
-            }
+        if((value === '×' || value === '÷' || value === '+') && calc.outString.slice(-1) === '(') {
+            return
+        }
 
         const operatorRegex = /[+\-×÷]$/;
 

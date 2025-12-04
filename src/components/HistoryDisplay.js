@@ -17,7 +17,7 @@ const HistoryDisplay = ({ history, className }) => {
                         return(
                             <div key={index} className='history-box'>
                                 <p className="inpt-dis-history">
-                                    {parts.map((part, i) => {
+                                    {[...parts].reverse().map((part, i) => {
                                         if(isOperator(part.trim())) {
                                             return (
                                                 <span key={i} className="operator">

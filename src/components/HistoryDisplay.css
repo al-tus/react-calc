@@ -62,7 +62,12 @@
     align-items: flex-end;
 }
 .history-box .inpt-dis-history{
-    font-size: 2.7vh
+    font-size: 2.7vh;
+    scrollbar-width: none;
+    width: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: row-reverse;
 }
 
 .history-box .out-dis-history{

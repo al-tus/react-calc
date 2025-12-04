@@ -337,8 +337,8 @@ function App() {
     }
 
     const equalsClickHandler = () => {
-        const parts = calc.evalString
-            .split(/([+\-*/%])/)
+        const parts = calc.outString
+            .split(/([+\-×÷%])/)
             .filter(part => part.trim().length > 0);
 
         if (parts.length < 3 || !calc.evalString || calc.res === 0) return
@@ -356,7 +356,7 @@ function App() {
             calc.outString = calc.evalString.slice(0, -1)
         }
 
-        const result = calculatePreview(evalStr)
+        const result = safeEval(evalStr)
 
         if (result !== '' && !isNaN(result)) {
             setCalc({

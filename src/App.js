@@ -96,8 +96,6 @@ function App() {
             calc.evalString = ''
         }
 
-
-
         let newOut
         let newEval
 
@@ -123,28 +121,33 @@ function App() {
         e.preventDefault();
         const value = e.target.innerHTML;
 
-        if((value === '×' || value === '÷' || value === '+') && calc.outString.slice(-1) === '(') {
+        const currentString = calc.outString;
+        const lastChar = currentString.slice(-1);
+        const operatorRegex = /[+\-×÷]$/;
+
+        const isLastOperator = operatorRegex.test(currentString);
+
+        const charToCheck = isLastOperator ? currentString.slice(-2, -1) : lastChar;
+
+        if (charToCheck === '(' && value !== '-'){
             return
         }
-
-        const operatorRegex = /[+\-×÷]$/;
 
         let updatedOutString
         let updatedEvalString;
 
 
-        if (operatorRegex.test(calc.outString)) {
-            updatedOutString = calc.outString.replace(operatorRegex, value);
-            updatedEvalString = calc.evalString.replace(operatorRegex, value);
-        }
-         else {
-             if (calc.outString === '') {
-                 updatedOutString = '0' + value
-                 updatedEvalString = '0' + value;
-             } else{
-                 updatedOutString = calc.outString + value;
-                 updatedEvalString = calc.evalString + value;
-             }
+        if (isLastOperator) {
+            updatedOutString = currentString.slice(0, -1) + value;
+            updatedEvalString = calc.evalString.slice(0, -1) + value;
+        } else {
+            if (currentString === '') {
+                updatedOutString = '0' + value;
+                updatedEvalString = '0' + value;
+            } else {
+                updatedOutString = currentString + value;
+                updatedEvalString = calc.evalString + value;
+            }
         }
 
         setCalc({

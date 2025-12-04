@@ -14,3 +14,18 @@
 .wrapper > div {
     padding: 15px;
 }
+
+@media (max-width: 480px) {
+    .wrapper{
+        padding-top: 30px;
+        height: 100vh;
+        width: 100vw;
+        aspect-ratio: auto;
+    }
+    .displays{
+        height: 25%;
+    }
+    .ellipse{
+        display: none
+    }
+}

@@ -10,7 +10,7 @@ const inputDisplay = ( {value} ) => {
     const isOperator = (char) => ['×', '÷', '+', '-'].includes(char);
 
     return (
-       <Textfit className='input-screen' mode="single" max={30}>
+       <Textfit className='input-screen' min={1} max={100} throttle={30}>
            {parts.map((part, i) => {
                if(isOperator(part.trim())) {
                    return (

@@ -1,17 +1,16 @@
 .history-display {
     height: 0;
     overflow: hidden;
-    padding: 0!important;
     transition: height 200ms ease-in-out;
-
+    padding: 0 10px 0 10px!important;
 }
 
 .history-display.show-history {
-    height: 10%;
+    height: 13%;
 }
 
 .history-items{
-    padding-top: 10px;
+    padding: 10px 10px 10px;
     height: 100%;
     display: flex;
     flex-direction: column-reverse;
@@ -49,7 +48,7 @@
 
 .cover{
     width: 100%;
-    gap: 10px;
+    gap: 15px;
     height: fit-content;
     display: flex;
     flex-direction: column;
@@ -63,9 +62,9 @@
     align-items: flex-end;
 }
 .history-box .inpt-dis-history{
-    font-size: 18px;
+    font-size: 2.7vh
 }
 
 .history-box .out-dis-history{
-    font-size: 25px;
+    font-size: 4vh;
 }

@@ -1,6 +1,4 @@
-import { useState, useRef } from "react";
-
-import './index.css'
+import { useState } from "react";
 
 import Wrapper from './components/Wrapper';
 import Displays from "./components/Displays";
@@ -11,6 +9,8 @@ import Button from "./components/Button";
 import Ellipses from "./components/Ellipses";
 import HeaderBox from "./components/HeaderBox";
 import HistoryDisplay from "./components/HistoryDisplay";
+
+
 
 const btnValues = [
     ['AC', '( )', '%', '÷'],
@@ -91,10 +91,11 @@ function App() {
 
         const value = e.target.innerHTML;
 
-        if (!(/[+\-×÷]$/.test(calc.outString)) && calc.res === 0) {
+        if (!(/[+\-×÷]$/.test(calc.outString)) && calc.res === 0 && calc.outString.slice(-1) !== '.') {
             calc.outString = ''
             calc.evalString = ''
         }
+
 
 
         let newOut
@@ -122,6 +123,11 @@ function App() {
     const operatorClickHandler = (e) => {
         e.preventDefault();
         const value = e.target.innerHTML;
+
+            if((value === '×' || value === '÷' || value === '+') && calc.outString.slice(-1) === '(') {
+                return
+            }
+
         const operatorRegex = /[+\-×÷]$/;
 
         let updatedOutString
@@ -161,7 +167,7 @@ function App() {
     }
 
     const clearClickHandler = () => {
-        if (calc.outString === '0') return;
+        if (calc.outString === '') return;
 
         let newOut = calc.outString.slice(0, -1);
         let newEval = calc.evalString.slice(0, -1);

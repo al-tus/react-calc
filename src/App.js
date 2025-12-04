@@ -123,7 +123,11 @@ function App() {
         e.preventDefault();
         const value = e.target.innerHTML;
 
-        if((value === '×' || value === '÷' || value === '+') && calc.outString.slice(-1) === '(') {
+        const noOperator = calc.outString.slice(0, -1)
+
+        console.log(noOperator.slice(-1) === '(');
+
+        if(((value === '×' || value === '÷' || value === '+') && calc.outString.slice(-1) === '(') || noOperator.slice(-1) === '(') {
             return
         }
 

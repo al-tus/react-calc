@@ -16,7 +16,7 @@ const HistoryDisplay = ({ history, className }) => {
 
                         return(
                             <div key={index} className='history-box'>
-                                <p className="input-history-part">
+                                <p className="inpt-dis-history">
                                     {parts.map((part, i) => {
                                         if(isOperator(part.trim())) {
                                             return (

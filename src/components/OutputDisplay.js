@@ -3,7 +3,7 @@ import {Textfit} from "react-textfit";
 
 const outputDisplay = ( {result } ) => {
     return (
-        <Textfit className='output-screen' mode="single" max={50}>
+        <Textfit className='output-screen' min={1} max={1000} throttle={50}>
             {result}
         </Textfit>
     )

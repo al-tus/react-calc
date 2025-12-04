@@ -18,7 +18,7 @@
 @media (max-width: 480px) {
     .wrapper{
         padding-top: 30px;
-        height: 90vh;
+        height: 100dvh;
         width: 100vw;
         aspect-ratio: auto;
     }

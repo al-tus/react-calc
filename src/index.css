@@ -11,7 +11,7 @@ body {
     overflow: hidden;
     display: flex;
     align-items: center;
-    height: 100vh;
+    height: 100dvh;
     justify-content: center;
 }
 
@@ -20,8 +20,3 @@ button {
     border: none;
 }
 
-@media (max-width: 480px){
-    body{
-        overflow-y: scroll;
-    }
-}

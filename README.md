@@ -41,10 +41,9 @@ Follow these steps to get a local copy up and running for development and testin
     ```
 3.  **Install dependencies:**
     ```bash
-    npm install
-    # or
-    # yarn install
+    npm install --force
     ```
+   
 
 ### Running the Application
 
